@@ -79,7 +79,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import EditModal from '../../components/EditModal.vue';
+import EditModal from '../../components/EditCategoriesComponent/EditModal.vue';
 const router = useRouter();
 
 const statusList = ref([]);

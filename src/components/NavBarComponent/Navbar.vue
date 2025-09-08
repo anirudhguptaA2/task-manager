@@ -15,7 +15,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { auth } from '../infrastructure/firebase';
+import { auth } from '../../infrastructure/firebase';
 import { signOut } from 'firebase/auth';
 
 const router = useRouter();
