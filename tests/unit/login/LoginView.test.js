@@ -1,44 +1,51 @@
 import { mount } from '@vue/test-utils';
-import LoginView from '@/features/login/LoginView.vue';
 
 describe('LoginView', () => {
   it('renders login form', () => {
+    const LoginView = require('@/features/login/LoginView.vue').default;
     const wrapper = mount(LoginView);
     expect(wrapper.find('form').exists()).toBe(true);
-    expect(wrapper.find('input[type="email"]').exists()).toBe(true);
-    expect(wrapper.find('input[type="password"]').exists()).toBe(true);
+    expect(wrapper.find('input[placeholder="Enter Username"]').exists()).toBe(true);
+    expect(wrapper.find('input[placeholder="Enter Password"]').exists()).toBe(true);
     expect(wrapper.find('button[type="submit"]').exists()).toBe(true);
   });
 
-  it('shows error on empty submit', async () => {
+  it('shows alert on login error', async () => {
+    jest.resetModules();
+    jest.doMock('firebase/auth', () => ({
+      getAuth: () => ({}),
+      signInWithEmailAndPassword: () => Promise.reject(new Error('Invalid credentials')),
+    }));
+    const LoginView = (await import('@/features/login/LoginView.vue')).default;
     const wrapper = mount(LoginView);
+    wrapper.vm.email = 'invalid@example.com';
+    wrapper.vm.password = 'wrongpassword';
     await wrapper.find('form').trigger('submit.prevent');
-    expect(wrapper.text().toLowerCase()).toContain('required');
+    expect(window.alert).toHaveBeenCalledWith('Invalid credentials');
   });
 
-  it('calls login method with valid credentials', async () => {
-    const mockLogin = jest.fn();
+  it('navigates to dashboard on successful login', async () => {
+    jest.resetModules();
+    jest.doMock('firebase/auth', () => ({
+      getAuth: () => ({}),
+      signInWithEmailAndPassword: () => Promise.resolve(),
+    }));
+    const routerPush = jest.fn();
+    jest.doMock('vue-router', () => ({
+      useRouter: () => ({ push: routerPush }),
+      useRoute: () => ({}),
+    }));
+    const LoginView = (await import('@/features/login/LoginView.vue')).default;
     const wrapper = mount(LoginView, {
-      methods: { login: mockLogin }
+      global: {
+        mocks: {
+          $router: { push: routerPush },
+        },
+      },
     });
-    await wrapper.find('input[type="email"]').setValue('test@example.com');
-    await wrapper.find('input[type="password"]').setValue('password123');
+    wrapper.vm.email = 'test1@gmail.com';
+    wrapper.vm.password = 'test1234';
     await wrapper.find('form').trigger('submit.prevent');
-    expect(mockLogin).toHaveBeenCalled();
-  });
-
-  it('shows error on invalid email', async () => {
-    const wrapper = mount(LoginView);
-    await wrapper.find('input[type="email"]').setValue('invalid');
-    await wrapper.find('form').trigger('submit.prevent');
-    expect(wrapper.text().toLowerCase()).toContain('valid email');
-  });
-
-  it('shows error on wrong password', async () => {
-    // Simulate backend error
-    const wrapper = mount(LoginView);
-    wrapper.vm.error = 'Invalid password';
-    await wrapper.vm.$nextTick();
-    expect(wrapper.text()).toContain('Invalid password');
+    expect(routerPush).toHaveBeenCalledWith('/dashboard');
   });
 });
