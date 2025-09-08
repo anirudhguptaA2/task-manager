@@ -23,8 +23,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import TaskCard from '../../components/TaskCard.vue'
-import TaskDetail from '../../components/TaskDetail.vue'
+import TaskCard from '../../components/TaskComponents/TaskCard.vue'
+import TaskDetail from '../../components/TaskComponents/TaskDetail.vue'
 import { useRouter } from 'vue-router'
 import { auth } from '../../infrastructure/firebase';
 const router = useRouter();

@@ -45,8 +45,8 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { auth } from '../../infrastructure/firebase';
 import { signOut } from 'firebase/auth';
-import TaskCard from '../../components/TaskCard.vue';
-import StatusChart from '../../components/StatusChart.vue';
+import TaskCard from '../../components/TaskComponents/TaskCard.vue';
+import StatusChart from '../../components/ChartComponent/StatusChart.vue';
 
 
 const router = useRouter();
@@ -57,7 +57,7 @@ const goToAddTask = () => {
 const handleLogout = async () => {
   router.push('/login');
 };
-  import TaskDetail from '../../components/TaskDetail.vue';
+  import TaskDetail from '../../components/TaskComponents/TaskDetail.vue';
 
 const statusList = ref([]);
 const priorityList = ref([]);

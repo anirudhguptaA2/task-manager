@@ -74,7 +74,7 @@ const props = defineProps({
 
 const localTask = ref(props.task)
 
-import { auth } from '../infrastructure/firebase';
+import { auth } from '../../infrastructure/firebase';
 function fetchTaskFromStorage(id) {
   if (!id) return null;
   const user = auth.currentUser;
