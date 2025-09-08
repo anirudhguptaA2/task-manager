@@ -1,0 +1,8 @@
+// Auth0 configuration and initialization
+import { createAuth0Client } from '@auth0/auth0-spa-js';
+
+export const auth0 = createAuth0Client({
+  domain: 'YOUR_AUTH0_DOMAIN',
+  client_id: 'YOUR_AUTH0_CLIENT_ID',
+  redirect_uri: window.location.origin,
+});
