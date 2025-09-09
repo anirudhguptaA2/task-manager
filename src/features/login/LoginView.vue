@@ -66,12 +66,18 @@ const handleLogout = async () => {
 <style scoped>
 /* Background and layout */
 .login-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   min-height: 100vh;
   background: #ff6f6f;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('../assets/background.svg'); /* Add your pattern asset */
+  background-image: url('@/assets/background.svg');
+  z-index: 0;
 }
 .login-main {
   background: #fff;
@@ -145,21 +151,6 @@ h2 {
   color: #222;
   display: flex;
   align-items: center;
-}
-/* ...existing code... */
-.login-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
-  background: #ff6f6f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: url('../assets/background.svg');
-  z-index: 0;
 }
 .login-btn {
   background: #ff6f6f;
