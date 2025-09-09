@@ -6,6 +6,7 @@
         <li><router-link to="/dashboard">Dashboard</router-link></li>
         <li><router-link to="/tasks">My Tasks</router-link></li>
         <li><router-link to="/categories">Task Categories</router-link></li>
+        <li><router-link to="/stickynotes">Sticky Notes</router-link></li>
         <li><router-link to="/profile">Profile</router-link></li>
         <li><a href="#" @click.prevent="handleLogout">Logout</a></li>
       </ul>

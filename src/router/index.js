@@ -8,6 +8,7 @@ import TaskCategoriesView from '../features/categories/TaskCategoriesView.vue';
 import ProfileView from '../features/profile/ProfileView.vue';
 import AddCategoryView from '../features/categories/AddCategoryView.vue';
 import AddTaskView from '../features/tasks/AddTaskView.vue';
+import StickyWall from '../features/stickynotes/StickyWall.vue';
 
 const routes = [
   {
@@ -60,6 +61,12 @@ const routes = [
     component: AddCategoryView,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/stickynotes',
+    name: 'StickyNotes',
+    component: StickyWall,
+    meta: { requiresAuth: true },
+  }
 ];
 
 const router = createRouter({
