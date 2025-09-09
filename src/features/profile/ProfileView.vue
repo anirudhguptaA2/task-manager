@@ -77,7 +77,9 @@ import { updateUserProfile } from '../../infrastructure/updateUserProfile';
 const userStore = useUserStore();
 const userName = ref('Sundar Gurung');
 const userEmail = ref('sundargurung360@gmail.com');
-const userPhoto = ref('https://randomuser.me/api/portraits/men/32.jpg');
+import placeholderImg from '@/assets/placeholderImage.svg';
+import { getCurrentUserId } from './userUtil.js';
+const userPhoto = ref('');
 const firstName = ref('');
 const lastName = ref('');
 const email = ref('');
@@ -85,22 +87,30 @@ const contact = ref('');
 const position = ref('');
 const editMode = ref(false);
 
+function getProfileKey() {
+  const uid = getCurrentUserId();
+  return uid ? `profileInfo_${uid}` : 'profileInfo_guest';
+}
+
 function loadProfileFromLocalStorage() {
-  const data = localStorage.getItem('profileInfo');
+  const data = localStorage.getItem(getProfileKey());
   if (data) {
     try {
       const profile = JSON.parse(data);
       userName.value = profile.userName || userName.value;
       userEmail.value = profile.userEmail || userEmail.value;
-      userPhoto.value = profile.userPhoto || userPhoto.value;
+      userPhoto.value = profile.userPhoto || '';
       firstName.value = profile.firstName || '';
       lastName.value = profile.lastName || '';
       email.value = profile.email || '';
       contact.value = profile.contact || '';
       position.value = profile.position || '';
       userStore.setUserInfo(profile);
-    } catch (e) {
-    }
+    } catch (e) {}
+  }
+  // If no photo, use placeholder
+  if (!userPhoto.value) {
+    userPhoto.value = placeholderImg;
   }
 }
 
@@ -115,7 +125,7 @@ function saveProfileToLocalStorage() {
     contact: contact.value,
     position: position.value,
   };
-  localStorage.setItem('profileInfo', JSON.stringify(profile));
+  localStorage.setItem(getProfileKey(), JSON.stringify(profile));
   userStore.setUserInfo(profile);
   userName.value = `${firstName.value} ${lastName.value}`.trim();
 }
@@ -126,7 +136,10 @@ onMounted(() => {
   if (user) {
     userName.value = user.displayName || userName.value;
     userEmail.value = user.email || userEmail.value;
-    userPhoto.value = user.photoURL || userPhoto.value;
+    // Only set userPhoto from Firebase if not already set in localStorage
+    if (!userPhoto.value || userPhoto.value === placeholderImg) {
+      userPhoto.value = user.photoURL || placeholderImg;
+    }
     email.value = user.email || user.email || '';
     if (user.displayName) {
       const parts = user.displayName.split(' ');
@@ -134,6 +147,10 @@ onMounted(() => {
       lastName.value = parts.slice(1).join(' ') || '';
     }
     saveProfileToLocalStorage();
+  }
+  // If still no photo, use placeholder
+  if (!userPhoto.value) {
+    userPhoto.value = placeholderImg;
   }
 });
 
