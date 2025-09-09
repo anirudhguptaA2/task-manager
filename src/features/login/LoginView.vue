@@ -6,7 +6,7 @@
         <form @submit.prevent="handleLogin">
           <div class="input-row">
             <span class="icon"><img src="@/assets/mail.svg" alt="Mail Icon" width="20" height="20" /></span>
-            <input v-model="email" type="text" placeholder="Enter Username" required />
+            <input v-model="email" type="email" placeholder="Enter Email" required />
           </div>
           <div class="input-row">
             <span class="icon"><img src="@/assets/password.svg" alt="Password Icon" width="20" height="20" /></span>
@@ -39,8 +39,8 @@ import { ref } from 'vue';
 import { auth } from '../../infrastructure/firebase';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
-const email = ref('test1@gmail.com');
-const password = ref('test1234');
+const email = ref('');
+const password = ref('');
 const showPassword = ref(false);
 const rememberMe = ref(false);
 

@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
 describe('Login and Create Task Flow', () => {
-  const testEmail = 'testuser@example.com';
-  const testPassword = 'TestPassword123!';
+  const testEmail = 'test1@gmail.com';
+  const testPassword = 'test1234';
   const testTaskTitle = 'E2E Test Task';
   const testTaskDesc = 'This is a task created by Cypress E2E test.';
 
