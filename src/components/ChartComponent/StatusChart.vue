@@ -1,5 +1,5 @@
 <template>
-  <div class="status-chart">
+  <div class="flex flex-col items-center gap-1.5">
     <svg width="60" height="60">
       <circle cx="30" cy="30" r="26" stroke="#e5e7eb" stroke-width="8" fill="none" />
       <circle cx="30" cy="30" r="26" :stroke="color" stroke-width="8" fill="none"
@@ -8,8 +8,8 @@
         stroke-linecap="round"
       />
     </svg>
-    <div class="status-percent">{{ percent }}%</div>
-    <div class="status-label" :style="{ color }">{{ label }}</div>
+    <div class="text-xl font-bold mt-1">{{ percent }}%</div>
+    <div class="text-sm font-semibold" :style="{ color }">{{ label }}</div>
   </div>
 </template>
 
@@ -20,21 +20,3 @@ defineProps({
   percent: Number
 });
 </script>
-
-<style scoped>
-.status-chart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-.status-percent {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-top: 0.2rem;
-}
-.status-label {
-  font-size: 0.98rem;
-  font-weight: 600;
-}
-</style>

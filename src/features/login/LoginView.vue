@@ -39,8 +39,8 @@ import { ref } from 'vue';
 import { auth } from '../../infrastructure/firebase';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
-const email = ref('');
-const password = ref('');
+const email = ref('test1@gmail.com');
+const password = ref('test1234');
 const showPassword = ref(false);
 const rememberMe = ref(false);
 

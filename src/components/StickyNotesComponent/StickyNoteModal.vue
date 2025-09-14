@@ -1,19 +1,19 @@
 <template>
-  <div class="modal-overlay">
-    <div class="modal">
-      <h2>Add Sticky Note</h2>
+  <div class="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.18)] flex items-center justify-center z-1000">
+    <div class="bg-white rounded-lg shadow-[0_2px_16px_rgba(0,0,0,0.13)] p-[2rem_2.5rem_1.5rem_2.5rem] min-w-80">
+      <h2 class="mb-4 text-[1.3rem] font-bold">Add Sticky Note</h2>
       <form @submit.prevent="save">
-        <input v-model="title" placeholder="Title" maxlength="32" required />
-        <textarea v-model="content" placeholder="Content" rows="4" maxlength="300" required />
-        <div class="color-row">
-          <label v-for="c in colors" :key="c" :style="{ background: colorMap[c] }" class="color-radio">
-            <input type="radio" v-model="color" :value="c" />
-            <span></span>
+        <input class="w-full mb-4 rounded-md border border-[#ddd] p-2 text-base" v-model="title" placeholder="Title" maxlength="32" required />
+        <textarea class="w-full mb-4 rounded-md border border-[#ddd] p-2 text-base" v-model="content" placeholder="Content" rows="4" maxlength="300" required />
+        <div class="flex gap-4 mb-5">
+          <label v-for="c in colors" :key="c" :style="{ background: colorMap[c] }" class="w-7 h-7 rounded-[50%] flex items-center justify-center cursor-pointer border-2 border-white shadow-[0_1px_4px_rgba(0,0,0,0.07)] relative">
+            <input class="hidden" type="radio" v-model="color" :value="c" />
+            <span class="block w-4.5 h-4.5 rounded-[50%] border-2 border-[#888] bg-transparent absolute top-[3px] left-[3px]"></span>
           </label>
         </div>
-        <div class="modal-actions">
-          <button type="button" @click="$emit('close')">Cancel</button>
-          <button type="submit">Add</button>
+        <div class="flex justify-end gap-4">
+          <button class="py-2 px-4 rounded-md text-base cursor-pointer bg-[#ededed] text-[#222] transition-colors duration-200 hover:bg-[#e0e0e0]" type="button" @click="$emit('close')">Cancel</button>
+          <button class="py-2 px-4 rounded-md text-base cursor-pointer bg-[#222] text-white transition-colors duration-200 hover:bg-[#333]" type="submit">Add</button>
         </div>
       </form>
     </div>

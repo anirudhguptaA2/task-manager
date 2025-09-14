@@ -1,47 +1,49 @@
-
 <template>
-  <div class="profile-bg">
-    <div class="profile-card">
-      <div class="profile-header">
-        <span class="profile-title">Account Information</span>
-        <a class="profile-back" href="#" @click.prevent="$router.back()">Go Back</a>
+  <Navbar />
+  <div class="min-h-screen bg-[#f7f8fa] p-[18px_0] flex justify-center items-start">
+    <div class="bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.07)] p-[32px_28px_32px_28px] max-w-225 w-full border-[1.5px_solid_#e5e7eb]">
+      <div class="flex justify-between items-start mb-4.5">
+        <span class="text-[2rem] font-bold border-b-[3px_solid_#ef4444] pb-0.5">Account Information</span>
+        <a class="font-semibold text-[#222] underline mt-1" href="#" @click.prevent="$router.back()">Go Back</a>
       </div>
-      <div class="profile-user-row">
-        <img class="profile-avatar" :src="userPhoto" alt="User avatar" />
-        <div v-if="editMode" class="profile-upload-wrap">
-          <input type="file" id="profile-upload" accept="image/*" @change="onProfileImageChange" />
-          <label for="profile-upload" class="profile-upload-btn">Upload Photo</label>
+      <div class="flex items-center gap-4.5 mb-6">
+        <img class="w-20 h-20 rounded-[50%] object-cover border-[2.5px_solid_#e5e7eb]" :src="userPhoto" alt="User avatar" />
+        <div v-if="editMode" class="ml-4.5 flex flex-col items-start">
+          <input class="hidden" type="file" id="profile-upload" accept="image/*" @change="onProfileImageChange" />
+          <label for="profile-upload" class="mt-2 bg-[#f3f4f6] text-[#222] rounded-md py-1 px-4 cursor-pointer border border-[#ddd] transition-colors duration-200 inline-block hover:bg-[#e5e7eb]">
+            Upload Photo
+          </label>
         </div>
-        <div class="profile-user-meta">
-          <div class="profile-user-name">{{ userName }}</div>
-          <div class="profile-user-email">{{ userEmail }}</div>
+        <div class="flex flex-col gap-0.5">
+          <div class="text-lg font-semibold text-[#111827]">{{ userName }}</div>
+          <div class="text-[1.05rem] text-[#444]">{{ userEmail }}</div>
         </div>
       </div>
-      <div class="profile-form-card">
-        <form class="profile-form" @submit.prevent="onEditOrUpdate">
-          <div class="profile-form-group">
-            <label>First Name</label>
-            <input type="text" v-model="firstName" :disabled="!editMode" />
+      <div class="bg-[#f5f6fa] rounded-xl border-[1.2px_solid_#d1d5db] p-[32px_24px_24px_24px]">
+        <form class="flex flex-col gap-4.5" @submit.prevent="onEditOrUpdate">
+          <div class="flex flex-col gap-1.5">
+            <label class="font-medium text-[#222] mb-0.5 text-left">First Name</label>
+            <input class="border-[1.5px_solid_#cbd5e1] rounded-md py-2 px-3 w-75 text-base bg-white text-black transition-[border_0.2s]" type="text" v-model="firstName" :disabled="!editMode" />
           </div>
-          <div class="profile-form-group">
-            <label>Last Name</label>
-            <input type="text" v-model="lastName" :disabled="!editMode" />
+          <div class="flex flex-col gap-1.5">
+            <label class="font-medium text-[#222] mb-0.5 text-left">Last Name</label>
+            <input class="border-[1.5px_solid_#cbd5e1] rounded-md py-2 px-3 w-75 text-base bg-white text-black transition-[border_0.2s]" type="text" v-model="lastName" :disabled="!editMode" />
           </div>
-          <div class="profile-form-group">
-            <label>Email Address</label>
-            <input type="email" v-model="email" disabled />
+          <div class="flex flex-col gap-1.5">
+            <label class="font-medium text-[#222] mb-0.5 text-left">Email Address</label>
+            <input class="border-[1.5px_solid_#cbd5e1] rounded-md py-2 px-3 w-75 text-base bg-white text-black transition-[border_0.2s]" type="email" v-model="email" :disabled="!editMode" />
           </div>
-          <div class="profile-form-group">
-            <label>Contact Number</label>
-            <input type="text" v-model="contact" :disabled="!editMode" />
+          <div class="flex flex-col gap-1.5">
+            <label class="font-medium text-[#222] mb-0.5 text-left">Contact Number</label>
+            <input class="border-[1.5px_solid_#cbd5e1] rounded-md py-2 px-3 w-75 text-base bg-white text-black transition-[border_0.2s]" type="text" v-model="contact" :disabled="!editMode" />
           </div>
-          <div class="profile-form-group">
-            <label>Position</label>
-            <input type="text" v-model="position" :disabled="!editMode" />
+          <div class="flex flex-col gap-1.5">
+            <label class="font-medium text-[#222] mb-0.5 text-left">Position</label>
+            <input class="border-[1.5px_solid_#cbd5e1] rounded-md py-2 px-3 w-75 text-base bg-white text-black transition-[border_0.2s]" type="text" v-model="position" :disabled="!editMode" />
           </div>
-          <div class="profile-form-actions">
-            <button class="profile-btn update" type="submit">{{ editMode ? 'Update' : 'Edit Info' }}</button>
-            <button v-if="editMode" class="profile-btn cancel" type="button" @click="onCancelEdit">Cancel</button>
+          <div class="flex gap-4 mt-2.5">
+            <button class="bg-[#ef4444] text-white hover:brightness-95 rounded-md py-2.5 px-5.5 text-base font-semibold cursor-pointer transition-colors duration-180" type="submit">{{ editMode ? 'Update' : 'Edit Info' }}</button>
+            <button v-if="editMode" class="bg-[#64748b] text-white hover:brightness-95 rounded-md py-2.5 px-5.5 text-base font-semibold cursor-pointer transition-colors duration-180" type="button" @click="onCancelEdit">Cancel</button>
           </div>
         </form>
       </div>
@@ -72,7 +74,7 @@ import { ref, onMounted } from 'vue';
 import { auth } from '../../infrastructure/firebase';
 import { useUserStore } from '../../application/userStore';
 import { updateUserProfile } from '../../infrastructure/updateUserProfile';
-
+import Navbar from '../../components/NavBarComponent/Navbar.vue';
 
 const userStore = useUserStore();
 const userName = ref('Sundar Gurung');
@@ -198,156 +200,3 @@ function changePassword() {
   alert('Change password clicked!');
 }
 </script>
-
-<style scoped>
-.profile-upload-wrap {
-  margin-left: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.profile-upload-btn {
-  margin-top: 8px;
-  background: #f3f4f6;
-  color: #222;
-  border-radius: 6px;
-  padding: 4px 16px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  transition: background 0.2s;
-  display: inline-block;
-}
-.profile-upload-btn:hover {
-  background: #e5e7eb;
-}
-.profile-upload-wrap input[type="file"] {
-  display: none;
-}
-.profile-btn.cancel {
-  background: #64748b;
-  color: #fff;
-}
-.profile-bg {
-  min-height: 100vh;
-  background: #f7f8fa;
-  padding: 18px 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-.profile-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 32px 28px 32px 28px;
-  max-width: 900px;
-  width: 100%;
-  border: 1.5px solid #e5e7eb;
-}
-.profile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 18px;
-}
-.profile-title {
-  font-size: 2rem;
-  font-weight: 700;
-  border-bottom: 3px solid #ef4444;
-  padding-bottom: 2px;
-}
-.profile-back {
-  font-weight: 600;
-  color: #222;
-  text-decoration: underline;
-  margin-top: 4px;
-}
-.profile-user-row {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 24px;
-}
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2.5px solid #e5e7eb;
-}
-.profile-user-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.profile-user-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #111827;
-}
-.profile-user-email {
-  color: #444;
-  font-size: 1.05rem;
-}
-.profile-form-card {
-  background: #f5f6fa;
-  border-radius: 12px;
-  border: 1.2px solid #d1d5db;
-  padding: 32px 24px 24px 24px;
-}
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-.profile-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.profile-form-group label {
-  font-weight: 500;
-  color: #222;
-  margin-bottom: 2px;
-  text-align: left;
-}
-.profile-form-group input {
-  border: 1.5px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 8px 12px;
-  width: 300px;
-  font-size: 1rem;
-  background: #fff;
-  color: black;
-  outline: none;
-  transition: border 0.2s;
-}
-.profile-form-group input:focus {
-  border-color: #ef4444;
-}
-.profile-form-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 10px;
-}
-.profile-btn {
-  background: #ef4444;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 22px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.18s;
-}
-.profile-btn.change {
-  background: #f97316;
-}
-.profile-btn:hover {
-  filter: brightness(0.95);
-}
-</style>
-}

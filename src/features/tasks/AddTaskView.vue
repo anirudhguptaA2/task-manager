@@ -1,61 +1,67 @@
 <template>
-  <div class="add-task-bg">
-    <div class="add-task-modal">
-      <div class="add-task-header">
-        <span class="add-task-title">{{ isEdit ? 'Edit Task' : 'Add New Task' }}</span>
-        <a href="#" class="add-task-back" @click.prevent="goBack">Go Back</a>
+  <div class="fixed top-0 left-0 right-0 bottom-0 inset-0 flex items-center justify-center z-1000 modal-bg-fix">
+    <div class="bg-white rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.12)] p-[1.5rem_1.2rem_1.2rem_1.2rem] min-w-100 max-w-[95vw] max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-start mb-6">
+        <span class="text-[1.3rem] font-bold text-[#222] border-b-2 border-[#ef4444] pb-0.5">{{ isEdit ? 'Edit Task' : 'Add New Task' }}</span>
+        <a href="#" class="text-[#222] font-medium underline cursor-pointer mt-0.5" @click.prevent="goBack">Go Back</a>
       </div>
-      <form class="add-task-form" @submit.prevent="handleSubmit">
-        <div class="add-task-form-inner">
-          <div class="add-task-fields">
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input id="title" v-model="title" placeholder="Enter task title" type="text" required />
+      <form class="border-[1.5px_solid_#ddd] rounded-[8px] p-[2rem_1.5rem_1.5rem_1.5rem]" @submit.prevent="handleSubmit">
+        <div class="flex gap-5">
+          <div class="flex-2">
+            <div class="mb-4">
+              <label class="block mb-[0.4rem] font-medium" for="title">Title</label>
+              <input class="w-125 py-2 px-3 border border-[1.5px_solid_#bbb] text-[#222] bg-white rounded-md text-base mb-1" id="title" v-model="title" placeholder="Enter task title" type="text" required />
             </div>
-            <div class="form-group">
-              <label for="date">Date</label>
-              <input id="date" v-model="date" type="date" required />
+            <div class="mb-4">
+              <label class="block mb-[0.4rem] font-medium" for="date">Date</label>
+              <input class="w-125 py-2 px-3 border border-[1.5px_solid_#bbb] text-[#222] bg-white rounded-md text-base mb-1" id="date" v-model="date" type="date" required />
             </div>
-            <div class="form-group">
-              <label>Priority</label>
-              <div class="priority-row">
-                <label v-for="p in priorityList" :key="p" class="priority-label" :class="p.toLowerCase()">
-                  <input type="checkbox" :checked="priority === p" @change="selectPriority(p)" />
-                  <span class="dot" :style="p === 'Extreme' ? 'background:#ef4444' : p === 'Moderate' ? 'background:#3b82f6' : p === 'Low' ? 'background:#22c55e' : ''"></span> {{ p }}
+            <div class="mb-4">
+              <label class="block mb-[0.4rem] font-medium">Priority</label>
+              <div class="flex gap-6 items-center mt-1">
+                <label v-for="p in priorityList" :key="p" class="flex items-center gap-[0.3rem] text-base font-medium" :class="p.toLowerCase()">
+                  <input class="mr-1" type="checkbox" :checked="priority === p" @change="selectPriority(p)" />
+                  <span class="inline-block w-2.5 h-2.5 rounded-[50%] ml-[0.12rem]" :style="'background:' + (priorityColorMap[p] || '#888888')"></span> {{ p }}
                 </label>
               </div>
             </div>
-            <div class="form-group">
-              <label for="status">Status</label>
-              <select id="status" v-model="status" required>
+            <div class="mb-4">
+              <label class="block mb-[0.4rem] font-medium" for="status">Status</label>
+              <select class="w-full py-2 px-3 border border-[1.5px_solid_#bbb] text-[#222] bg-white rounded-md text-base mb-[0.2rem]" id="status" v-model="status" required>
                 <option v-for="s in statusList" :key="s" :value="s">{{ s }}</option>
               </select>
             </div>
-            <div class="form-group">
-              <label for="desc">Task Description</label>
-              <textarea id="desc" v-model="desc" placeholder="Start writing here......" rows="5"></textarea>
+            <div class="mb-4">
+              <label class="block mb-[0.4rem] font-medium" for="desc">Task Description</label>
+              <textarea class="w-125 p-[0.7rem_0.9rem] border border-[1.5px_solid_#bbb] text-[#000000] bg-white rounded-md text-base min-h-30 resize-y" 
+                id="desc" v-model="desc" placeholder="Start writing here......" rows="5">
+              </textarea>
             </div>
           </div>
-            <div class="add-task-upload">
-              <label>Upload Image</label>
-              <div class="upload-box"
+            <div class="flex-1 flex flex-col items-center justify-start ml-8">
+              <label class="font-medium mb-2 block text-center">Upload Image</label>
+              <div class="border border-[1.5px_solid_#bbb] rounded-lg flex flex-col items-center justify-center min-w-50 min-h-45 bg-[#f8fafc] mt-[0.2rem] relative"
                 @dragover.prevent
                 @drop.prevent="handleDrop">
-                <div v-if="imageData" class="image-preview">
+                <div v-if="imageData" class="w-30 h-30 flex items-center justify-center mb-2 rounded-lg overflow-hidden bg-[#f3f4f6] border border-[#ddd]">
                   <img :src="imageData" alt="Preview" />
                 </div>
                 <template v-else>
-                  <div class="upload-icon">
+                  <div class="mb-[0.7rem]">
                     <svg width="48" height="48" fill="none" stroke="#bbb" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="#f8fafc"/><path d="M12 16V8m0 0-3 3m3-3 3 3" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
-                  <div class="upload-text">Drag & Drop files here<br />or</div>
+                  <div class="text-[#888] text-[0.98rem] text-center mb-2">Drag & Drop files here<br />or</div>
                 </template>
-                <input type="file" id="file-upload" class="file-input" accept="image/*" @change="handleFile" />
-                <label for="file-upload" class="browse-btn">Browse</label>
+                <input type="file" id="file-upload" accept="image/*" @change="handleFile" class="hidden" />
+                <label for="file-upload" class="inline-block bg-[#eee] text-[#222] rounded-md p-[0.3rem_1.2rem] font-medium text-base cursor-pointer mt-[0.2rem] transition-colors duration-200">
+                  Browse
+                </label>
               </div>
             </div>
         </div>
-  <button class="add-task-done" type="submit">{{ isEdit ? 'Update' : 'Add' }}</button>
+        <button class="mt-6 bg-[#ef4444] text-white rounded-[7px] p-[0.7rem_2.5rem] text-[1.1rem] font-semibold cursor-pointer transition-colors duration-200" 
+          type="submit">{{ isEdit ? 'Update' : 'Add' }}
+        </button>
       </form>
     </div>
   </div>
@@ -73,6 +79,7 @@ const status = ref('');
 const statusList = ref([]);
 const priority = ref('');
 const priorityList = ref([]);
+const priorityColorMap = ref({});
 const isEdit = ref(false);
 const editTaskId = ref(null);
 
@@ -80,6 +87,7 @@ const editTaskId = ref(null);
 onMounted(() => {
   statusList.value = JSON.parse(localStorage.getItem('statusList') || '["Completed", "In Progress", "Not Started"]');
   priorityList.value = JSON.parse(localStorage.getItem('priorityList') || '["Extreme", "Moderate", "Low"]');
+  priorityColorMap.value = JSON.parse(localStorage.getItem('priorityColorMap') || '{}');
   // Set default status if not set
   if (!status.value && statusList.value.length > 0) status.value = statusList.value[0];
 
@@ -217,7 +225,7 @@ const handleSubmit = () => {
 };
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .add-task-bg {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -435,4 +443,4 @@ select {
     margin-top: 0;
   }
 }
-</style>
+</style> -->

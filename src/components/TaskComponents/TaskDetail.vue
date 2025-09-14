@@ -1,53 +1,62 @@
 <template>
-  <div v-if="localTask" class="detail-card">
-    
-    <div class="header">
-      <img v-if="localTask.img" :src="localTask.img" alt="" class="thumb" />
-      <div class="meta">
-        <h2 class="title">{{ localTask.title }}</h2>
+  <div v-if="localTask" class="relative border border-[#e5e7eb] bg-[#fff] rounded-2xl p-4 shadow-xs flex flex-col">
 
-        <div class="meta-row">
-          <span class="meta-label">Priority:</span>
-          <span :class="['meta-value', priorityClass]">{{ localTask.priority }}</span>
+    <div class="flex gap-4 items-start mb-3">
+      <img v-if="localTask.img" :src="localTask.img" alt="" class="w-24 h-24 object-cover rounded-xl" />
+      <div class="flex-1">
+        <h2 class="m-[0_0_4px] text-xl font-bold text-[#111827]">{{ localTask.title }}</h2>
+
+        <div class="flex gap-1 items-center leading-[1.4]">
+          <span class="font-semibold text-[#4b5563]">Priority:</span>
+          <span class="font-semibold" :style="{ color: getPriorityColor }">{{ localTask.priority }}</span>
         </div>
 
-        <div class="meta-row">
-          <span class="meta-label">Status:</span>
-          <span :class="['meta-value', statusClass]">{{ localTask.status }}</span>
+        <div class="flex gap-1 items-center leading-[1.4]">
+          <span class="font-semibold text-[#4b5563]">Status:</span>
+          <span class="font-semibold" :style="{ color: getStatusColor }">{{ localTask.status }}</span>
         </div>
 
-        <div class="meta-row muted">
-          <span class="meta-label">Date of Completion:</span>
-          <span class="meta-value">{{ localTask.date }}</span>
+        <div class="flex gap-1 items-center leading-[1.4] text-[#9ca3af]">
+          <span class="font-semibold text-[#4b5563]">Date of Completion:</span>
+          <span class="font-semibold">{{ localTask.date }}</span>
         </div>
       </div>
     </div>
 
-    <div class="body">
-      <p class="block">
-        <span class="label">Task Description:</span>
+  <div class="mt-2 mb-4 text-[#374151] text-left">
+      <p class="mt-2.5">
+        <span class="font-bold text-[#111827]">Task Description:</span>
         {{ localTask.desc }}
       </p>
     </div>
 
-    <div class="actions" v-if="showActions">
-      <button class="icon danger" aria-label="Delete" @click="handleDelete">
-  <img src="@/assets/delete.svg" alt="">
+  <div class="mt-auto flex justify-end gap-2" v-if="showActions">
+      <button class="w-10 h-10 border-none rounded-lg flex items-center justify-center cursor-pointer shadow-sm p-0 bg-[#ef4444]" aria-label="Delete" @click="handleDelete">
+        <img src="@/assets/delete.svg" alt="">
       </button>
-      <button class="icon edit" aria-label="Edit" @click="handleEdit">
-  <img src="@/assets/edit.svg" alt="">
+      <button class="w-10 h-10 border-none rounded-lg flex items-center justify-center cursor-pointer shadow-sm p-0 bg-[#f43f5e]" aria-label="Edit" @click="handleEdit">
+        <img src="@/assets/edit.svg" alt="">
       </button>
     </div>
   </div>
 
-  <div v-else class="detail-card empty">Select a task to see details</div>
+  <div v-else class="relative border border-[#e5e7eb] bg-[#fff] rounded-2xl p-4 shadow-xs text-[#9ca3af] py-12 px-4">
+    Select a task to see details
+  </div>
 </template>
 
 <script setup>
 import { ref, watch, computed } from 'vue'
-
+import { auth } from '../../infrastructure/firebase';
 
 const emit = defineEmits(['delete', 'edit']);
+
+const props = defineProps({
+  task: { type: Object, default: null },
+  showActions: { type: Boolean, default: true }
+})
+
+const localTask = ref(props.task)
 
 function handleEdit() {
   if (!localTask.value?.id) return;
@@ -67,14 +76,6 @@ function handleDelete() {
   emit('delete');
 }
 
-const props = defineProps({
-  task: { type: Object, default: null },
-  showActions: { type: Boolean, default: true }
-})
-
-const localTask = ref(props.task)
-
-import { auth } from '../../infrastructure/firebase';
 function fetchTaskFromStorage(id) {
   if (!id) return null;
   const user = auth.currentUser;
@@ -96,101 +97,15 @@ watch(
   { immediate: true }
 )
 
-const priorityClass = computed(() => {
-  switch (localTask.value?.priority) {
-    case 'Extreme': return 'red'
-    case 'Moderate': return 'amber'
-    case 'Low': return 'green'
-    default: return ''
-  }
-})
+const getPriorityColor = computed(() => {
+  if (!localTask.value?.priority) return '';
+  const colorMap = JSON.parse(localStorage.getItem('priorityColorMap') || '{}');
+  return colorMap[localTask.value.priority] || '';
+});
 
-const statusClass = computed(() => {
-  switch (localTask.value?.status) {
-    case 'Not Started': return 'red'
-    case 'In Progress': return 'blue'
-    case 'Completed': return 'green'
-    default: return ''
-  }
-})
+const getStatusColor = computed(() => {
+  if (!localTask.value?.status) return '';
+  const colorMap = JSON.parse(localStorage.getItem('statusColorMap') || '{}');
+  return colorMap[localTask.value.status] || '';
+});
 </script>
-
-<style scoped>
-.detail-card{
-  position: relative;
-  border: 1px solid #e5e7eb;
-  background:#fff;
-  border-radius:16px;
-  padding:16px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.04);
-}
-.detail-card.empty{ color:#9ca3af; padding:48px 16px; }
-
-.header{
-  display:flex; gap:16px; align-items:flex-start; margin-bottom:12px;
-}
-.thumb{
-  width:96px; height:96px; object-fit:cover; border-radius:12px;
-}
-.meta{ flex:1; }
-.title{ margin:0 0 4px; font-size:20px; font-weight:700; color:#111827; }
-
-.meta-row{ display:flex; gap:6px; align-items:center; line-height:1.4; }
-.meta-label{ font-weight:600; color:#4b5563; }
-.meta-value{ font-weight:600; }
-.muted{ color:#9ca3af; }
-.red{ color:#ef4444; }
-.blue{ color:#3b82f6; }
-.green{ color:#10b981; }
-.amber{ color:#f59e0b; }
-
-.body{ 
-  margin-top:8px; 
-  margin-bottom:48px; 
-  color:#374151;
-  text-align:left; 
-}
-
-.label{ 
-  font-weight:700; 
-  color:#111827; 
-}
-.block{ 
-  margin-top:10px; 
-}
-.notes{ 
-  margin:6px 0 0 18px; 
-}
-.notes li{ 
-  margin:6px 0; 
-}
-
-.actions{
-  position:absolute; 
-  right:12px; 
-  bottom:12px; 
-  display:flex; 
-  gap:8px;
-}
-.icon{
-  width:40px;
-  height:40px;
-  border:none;
-  border-radius:10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor:pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
-  padding: 0;
-}
-.icon.danger{ 
-  background:#ef4444; 
-}
-.icon.edit{ 
-  background:#f43f5e; 
-}
-.icon:active{ 
-  transform: translateY(1px); 
-  }
-</style>
