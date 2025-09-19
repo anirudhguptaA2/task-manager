@@ -43,7 +43,8 @@
           </div>
           <div class="flex gap-4 mt-2.5">
             <button class="bg-[#ef4444] text-white hover:brightness-95 rounded-md py-2.5 px-5.5 text-base font-semibold cursor-pointer transition-colors duration-180" type="submit">{{ editMode ? 'Update' : 'Edit Info' }}</button>
-            <button v-if="editMode" class="bg-[#64748b] text-white hover:brightness-95 rounded-md py-2.5 px-5.5 text-base font-semibold cursor-pointer transition-colors duration-180" type="button" @click="onCancelEdit">Cancel</button>
+            <button v-if="editMode" class="bg-[#64748b] text-white hover:brightness-95 rounded-md py-2.5 px-5.5 text-base font-semibold cursor-pointer transition-colors duration-180" 
+             type="button" @click="onCancelEdit">Cancel</button>
           </div>
         </form>
       </div>
@@ -168,9 +169,6 @@ async function onEditOrUpdate() {
     editMode.value = true;
     return;
   }
-function onCancelEdit() {
-  editMode.value = false;
-}
 
   const user = auth.currentUser;
   if (user) {
@@ -194,6 +192,10 @@ function onCancelEdit() {
     editMode.value = false;
     alert('Info updated locally!');
   }
+}
+
+function onCancelEdit() {
+  editMode.value = false;
 }
 
 function changePassword() {

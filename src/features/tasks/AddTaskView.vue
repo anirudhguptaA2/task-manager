@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-0 left-0 right-0 bottom-0 inset-0 flex items-center justify-center z-1000 modal-bg-fix">
+  <div class="fixed top-0 left-0 right-0 bottom-0 inset-0 flex items-center justify-center z-1000 modal-bg-fix bg-white/30 backdrop-blur-sm">
     <div class="bg-white rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.12)] p-[1.5rem_1.2rem_1.2rem_1.2rem] min-w-100 max-w-[95vw] max-h-[85vh] overflow-y-auto">
       <div class="flex justify-between items-start mb-6">
         <span class="text-[1.3rem] font-bold text-[#222] border-b-2 border-[#ef4444] pb-0.5">{{ isEdit ? 'Edit Task' : 'Add New Task' }}</span>
