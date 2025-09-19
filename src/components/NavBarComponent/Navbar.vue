@@ -1,14 +1,14 @@
 <template>
-  <nav class="navbar">
-    <div class="navbar-container">
-      <div class="navbar-logo">Task-Manager</div>
-      <ul class="navbar-links">
-        <li><router-link to="/dashboard">Dashboard</router-link></li>
-        <li><router-link to="/tasks">My Tasks</router-link></li>
-        <li><router-link to="/categories">Task Categories</router-link></li>
-        <li><router-link to="/stickynotes">Sticky Notes</router-link></li>
-        <li><router-link to="/profile">Profile</router-link></li>
-        <li><a href="#" @click.prevent="handleLogout">Logout</a></li>
+  <nav class="w-[100vw] left-0 top-0 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] sticky z-0 h-16 flex items-center justify-center m-0 p-0 overflow-x-hidden">
+    <div class="w-[90vw] max-w-300 m-[0_auto] flex items-center justify-between px-10 h-16 box-border">
+      <div class="text-2xl font-bold text-[#ef4444]">Task-Manager</div>
+      <ul class="flex gap-8 list-none m-0 p-0">
+        <li class="text-[#444] font-medium text-base transition-colors duration-200 hover:text-[#ef4444]"><router-link to="/dashboard">Dashboard</router-link></li>
+        <li class="text-[#444] font-medium text-base transition-colors duration-200 hover:text-[#ef4444]"><router-link to="/tasks">My Tasks</router-link></li>
+        <li class="text-[#444] font-medium text-base transition-colors duration-200 hover:text-[#ef4444]"><router-link to="/categories">Task Categories</router-link></li>
+        <li class="text-[#444] font-medium text-base transition-colors duration-200 hover:text-[#ef4444]"><router-link to="/stickynotes">Sticky Notes</router-link></li>
+        <li class="text-[#444] font-medium text-base transition-colors duration-200 hover:text-[#ef4444]"><router-link to="/profile">Profile</router-link></li>
+        <li class="text-[#444] font-medium text-base transition-colors duration-200 hover:text-[#ef4444]"><a href="#" @click.prevent="handleLogout">Logout</a></li>
       </ul>
     </div>
   </nav>
@@ -25,55 +25,3 @@ const handleLogout = async () => {
   router.push('/login');
 };
 </script>
-
-<style scoped>
-.navbar {
-  width: 80vw;
-  left: 0;
-  top: 0;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  position: sticky;
-  z-index: 0;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-.navbar-container {
-  width: 90vw;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2.5rem;
-  height: 64px;
-  box-sizing: border-box;
-}
-.navbar-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ef4444;
-}
-.navbar-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.navbar-links li a, .navbar-links li .router-link-active {
-  text-decoration: none;
-  color: #444;
-  font-weight: 500;
-  font-size: 1.08rem;
-  transition: color 0.2s;
-}
-.navbar-links li a:hover, .navbar-links li .router-link-active {
-  color: #ef4444;
-}
-</style>

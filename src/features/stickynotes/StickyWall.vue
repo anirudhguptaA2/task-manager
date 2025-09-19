@@ -1,18 +1,22 @@
 <template>
-  <div class="sticky-wall">
-    <h1>Sticky Wall</h1>
-    <div class="sticky-grid">
-      <StickyNote
-        v-for="note in notes"
-        :key="note.id"
-        :note="note"
-        @delete="deleteNote(note.id)"
-      />
-      <div class="sticky-add" @click="showModal = true">
-        <span>+</span>
+  <Navbar />
+  <div class="min-h-screen bg-[#f5f5f5] p-4">
+    <div class="max-w-4xl m-[2rem_auto] bg-[#fff] rounded-xl p-8 shadow-[0_2px_12px_rgba(0,0,0,0.07)]">
+      <h1 class="text-4xl font-bold mb-6">Sticky Wall</h1>
+      <div class="grid grid-cols-3 gap-8 gap-x-6">
+        <StickyNote
+          v-for="note in notes"
+          :key="note.id"
+          :note="note"
+          @delete="deleteNote(note.id)"
+        />
+        <div class="flex items-center justify-center bg-[#ededed] rounded-xl min-h-45 text-5xl text-[#222] cursor-pointer transition-colors duration-200 hover:bg-[#e0e0e0]" 
+        @click="showModal = true">
+          <span>+</span>
+        </div>
       </div>
+      <StickyNoteModal v-if="showModal" @close="showModal = false" @save="addNote" />
     </div>
-    <StickyNoteModal v-if="showModal" @close="showModal = false" @save="addNote" />
   </div>
 </template>
 
@@ -21,6 +25,7 @@ import { ref, onMounted, watch } from 'vue';
 import StickyNote from '../../components/StickyNotesComponent/StickyNote.vue';
 import StickyNoteModal from '../../components/StickyNotesComponent/StickyNoteModal.vue';
 import { getCurrentUserId } from './userUtil.js';
+import Navbar from '../../components/NavBarComponent/Navbar.vue';
 
 const showModal = ref(false);
 const notes = ref([]);
@@ -59,39 +64,3 @@ function deleteNote(id) {
   notes.value = notes.value.filter(n => n.id !== id);
 }
 </script>
-
-<style scoped>
-.sticky-wall {
-  max-width: 900px;
-  margin: 2rem auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-}
-.sticky-wall h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-}
-.sticky-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem 1.5rem;
-}
-.sticky-add {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ededed;
-  border-radius: 12px;
-  min-height: 180px;
-  font-size: 3rem;
-  color: #222;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.sticky-add:hover {
-  background: #e0e0e0;
-}
-</style>

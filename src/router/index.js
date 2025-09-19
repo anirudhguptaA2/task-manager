@@ -6,7 +6,7 @@ import DashboardView from '../features/dashboard/DashboardView.vue';
 import MyTasksView from '../features/tasks/MyTasksView.vue';
 import TaskCategoriesView from '../features/categories/TaskCategoriesView.vue';
 import ProfileView from '../features/profile/ProfileView.vue';
-import AddCategoryView from '../features/categories/AddCategoryView.vue';
+// import AddCategoryView from '../features/categories/AddCategoryView.vue';
 import AddTaskView from '../features/tasks/AddTaskView.vue';
 import StickyWall from '../features/stickynotes/StickyWall.vue';
 
@@ -55,12 +55,12 @@ const routes = [
     component: ProfileView,
     meta: { requiresAuth: true },
   },
-  {
-    path: '/categories/add',
-    name: 'AddCategory',
-    component: AddCategoryView,
-    meta: { requiresAuth: true },
-  },
+  // {
+  //   path: '/categories/add',
+  //   name: 'AddCategory',
+  //   component: AddCategoryView,
+  //   meta: { requiresAuth: true },
+  // },
   {
     path: '/stickynotes',
     name: 'StickyNotes',

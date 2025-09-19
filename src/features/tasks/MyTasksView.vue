@@ -1,10 +1,11 @@
 
 <template>
-  <div>
-    <div class="tasks-container">
-      <div class="task-list-scroll">
-        <div class="task-list">
-          <h2>My Tasks</h2>
+  <div class="fixed inset-0 bg-[#f7f8fa] flex flex-col items-center justify-center">
+    <Navbar />
+    <div class="grid grid-cols-[1fr_2fr] gap-4 p-4 h-[calc(92vh-64px)] box-border flex-[1_1_auto]">
+      <div class="h-full overflow-y-auto min-w-[450px]">
+        <div class="flex flex-col gap-[1.2rem] border border-gray-300 rounded-xl p-4 bg-[#f9f9f9] min-w-0">
+          <h2 class="font-bold">My Tasks</h2>
           <TaskCard 
             v-for="task in tasks" 
             :key="task.id" 
@@ -14,7 +15,7 @@
           />
         </div>
       </div>
-      <div class="task-detail-panel">
+      <div class="border border-gray-300 rounded-xl p-4 bg-[#f9f9f9] min-w-0 max-w-[650px]">
         <TaskDetail :task="selectedTask" @delete="handleTaskDelete" @edit="handleTaskEdit" />
       </div>
     </div>
@@ -27,6 +28,8 @@ import TaskCard from '../../components/TaskComponents/TaskCard.vue'
 import TaskDetail from '../../components/TaskComponents/TaskDetail.vue'
 import { useRouter } from 'vue-router'
 import { auth } from '../../infrastructure/firebase';
+import Navbar from '../../components/NavBarComponent/Navbar.vue';
+
 const router = useRouter();
 function handleTaskEdit(taskId) {
   router.push({ path: '/tasks/add', query: { edit: taskId } });
