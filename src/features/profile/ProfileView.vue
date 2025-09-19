@@ -166,9 +166,6 @@ async function onEditOrUpdate() {
     editMode.value = true;
     return;
   }
-function onCancelEdit() {
-  editMode.value = false;
-}
 
   const user = auth.currentUser;
   if (user) {
@@ -192,6 +189,10 @@ function onCancelEdit() {
     editMode.value = false;
     alert('Info updated locally!');
   }
+}
+
+function onCancelEdit() {
+  editMode.value = false;
 }
 
 function changePassword() {
